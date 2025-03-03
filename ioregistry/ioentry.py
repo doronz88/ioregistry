@@ -1,12 +1,12 @@
 import ctypes
 import plistlib
-from ctypes import c_void_p
 from typing import Generator
 
 from ioregistry.allocated import Allocated
 from ioregistry.exceptions import IORegistryException
 from ioregistry.native.core_foundation import CFTypeRef, CoreFoundation
-from ioregistry.native.iokit import KERN_SUCCESS, IOKit, io_name_size, io_registry_entry_t, kIOMasterPortDefault
+from ioregistry.native.iokit import KERN_SUCCESS, IOKit, io_iterator_t, io_name_size, io_registry_entry_t, \
+    kIOMasterPortDefault
 
 
 def get_io_entry_class_name(entry: io_registry_entry_t) -> str:
@@ -98,7 +98,7 @@ class IOEntry(Allocated):
 
 def get_io_services_by_type(service_type: str) -> Generator[IOEntry, None, None]:
     """ Returns iterator for specified `service_type` """
-    interator = c_void_p()
+    interator = io_iterator_t()
 
     error = IOKit.IOServiceGetMatchingServices(
         kIOMasterPortDefault,
