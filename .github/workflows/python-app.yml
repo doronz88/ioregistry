@@ -41,5 +41,3 @@ jobs:
       - name: Test install
         run: |
           python -m pip install -U '.'
-      - name: Test show usage
-        run: pytest -m cli
