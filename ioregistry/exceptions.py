@@ -1,0 +1,2 @@
+class IORegistryException(Exception):
+    pass
