@@ -28,9 +28,6 @@ dynamic = ["dependencies", "version"]
 "Homepage" = "https://github.com/doronz88/ioregistry"
 "Bug Reports" = "https://github.com/doronz88/ioregistry/issues"
 
-[project.scripts]
-ioregistry = "ioregistry.__main__:cli"
-
 [tool.setuptools.packages.find]
 exclude = ["docs*", "tests*"]
 
