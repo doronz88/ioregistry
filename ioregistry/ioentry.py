@@ -77,10 +77,10 @@ class IOEntry(Allocated):
         return result
 
     def get_parent_by_type(self, plane: str, parent_type: str) -> 'IOEntry':
-        """ Walk up the IOService tree in look for the given type """
+        """ Walk up the IOService tree in look for the given type (or any of its subclasses) """
         entry = self._entry
         parent_type = parent_type.encode()
-        while get_io_entry_class_name(entry) != parent_type:
+        while not IOKit.IOObjectConformsTo(entry, parent_type):
             parent = io_registry_entry_t()
             error = IOKit.IORegistryEntryGetParentEntry(entry, plane.encode(), ctypes.byref(parent))
             # If we weren't able to find a parent for the device, we're done.
