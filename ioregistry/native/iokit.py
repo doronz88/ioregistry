@@ -1,5 +1,5 @@
 import ctypes
-from ctypes import c_int, c_uint, c_uint32, c_void_p, cdll
+from ctypes import c_char_p, c_int, c_uint, c_uint32, c_void_p, cdll
 from ctypes.util import find_library
 
 from ioregistry.native.core_foundation import CFDictionaryRef
@@ -40,6 +40,9 @@ IOKit.IORegistryEntryGetName.restype = kern_return_t
 
 IOKit.IOObjectGetClass.argtypes = [io_registry_entry_t, c_void_p]
 IOKit.IOObjectGetClass.restype = kern_return_t
+
+IOKit.IOObjectConformsTo.argtypes = [io_object_t, c_char_p]
+IOKit.IOObjectConformsTo.restype = c_uint
 
 IOKit.IOObjectRelease.argtypes = [io_object_t]
 IOKit.IOObjectRelease.restype = kern_return_t
