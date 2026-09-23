@@ -31,6 +31,9 @@ dynamic = ["dependencies", "version"]
 [tool.setuptools.packages.find]
 exclude = ["docs*", "tests*"]
 
+[tool.setuptools.package-data]
+ioregistry = ["py.typed"]
+
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
 version = {attr = "ioregistry._version.__version__"}

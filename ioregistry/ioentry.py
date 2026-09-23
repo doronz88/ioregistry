@@ -1,6 +1,6 @@
 import ctypes
 import plistlib
-from typing import Generator
+from typing import Any, Generator
 
 from ioregistry.allocated import Allocated
 from ioregistry.exceptions import IORegistryException
@@ -13,10 +13,10 @@ def get_io_entry_class_name(entry: io_registry_entry_t) -> str:
     """ Get the name of the given IO Entry class """
     classname = ctypes.create_string_buffer(io_name_size)
     IOKit.IOObjectGetClass(entry, ctypes.byref(classname))
-    return classname.value
+    return classname.value.decode()
 
 
-def convert_cf_native_to_python(cf_object: CFTypeRef) -> dict:
+def convert_cf_native_to_python(cf_object: CFTypeRef) -> dict[str, Any]:
     """ Create a python object from a given native CoreFoundation object """
 
     # Create a temporary XML property list
@@ -54,7 +54,7 @@ class IOEntry(Allocated):
         return name.value.decode()
 
     @property
-    def properties(self) -> dict:
+    def properties(self) -> dict[str, Any]:
         """ Get entry properties using `IORegistryEntryCreateCFProperties()` """
 
         # Create a pointer to hold the dictionary
@@ -79,8 +79,8 @@ class IOEntry(Allocated):
     def get_parent_by_type(self, plane: str, parent_type: str) -> 'IOEntry':
         """ Walk up the IOService tree in look for the given type (or any of its subclasses) """
         entry = self._entry
-        parent_type = parent_type.encode()
-        while not IOKit.IOObjectConformsTo(entry, parent_type):
+        encoded_parent_type = parent_type.encode()
+        while not IOKit.IOObjectConformsTo(entry, encoded_parent_type):
             parent = io_registry_entry_t()
             error = IOKit.IORegistryEntryGetParentEntry(entry, plane.encode(), ctypes.byref(parent))
             # If we weren't able to find a parent for the device, we're done.

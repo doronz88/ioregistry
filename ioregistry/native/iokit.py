@@ -1,10 +1,9 @@
 import ctypes
-from ctypes import c_char_p, c_int, c_uint, c_uint32, c_void_p, cdll
-from ctypes.util import find_library
+from ctypes import c_char_p, c_int, c_uint, c_uint32, c_void_p
 
-from ioregistry.native.core_foundation import CFDictionaryRef
+from ioregistry.native.core_foundation import CFDictionaryRef, load_framework
 
-IOKit = cdll.LoadLibrary(find_library('IOKit'))
+IOKit = load_framework('IOKit')
 
 kIOMasterPortDefault = 0
 natural_t = c_uint32
