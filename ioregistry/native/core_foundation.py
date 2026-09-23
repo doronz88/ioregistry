@@ -2,7 +2,18 @@ import ctypes
 from ctypes import c_bool, c_char_p, c_int32, c_long, c_uint32, c_void_p, cdll
 from ctypes.util import find_library
 
-CoreFoundation = cdll.LoadLibrary(find_library('CoreFoundation'))
+from ioregistry.exceptions import IORegistryException
+
+
+def load_framework(name: str) -> ctypes.CDLL:
+    """Load a macOS system framework, saying which one is missing rather than failing on None."""
+    path = find_library(name)
+    if path is None:
+        raise IORegistryException(f'{name} is unavailable on this platform')
+    return cdll.LoadLibrary(path)
+
+
+CoreFoundation = load_framework('CoreFoundation')
 
 kCFAllocatorDefault = c_void_p.in_dll(CoreFoundation, 'kCFAllocatorDefault')
 
